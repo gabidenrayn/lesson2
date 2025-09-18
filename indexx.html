@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fly Emirates — Билеты онлайн</title>
+  <style>
+    :root{
+      --burgundy:#a80000;
+      --burgundy-dark:#800000;
+      --bg:#f6f6f6;
+      --card:#ffffff;
+      --text:#2b2b2b;
+      --muted:#6b6b6b;
+      --maxw:1200px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .wrapper{
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:18px;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 18px;
+      background:var(--card);
+      border-radius:10px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+      margin-bottom:18px;
+    }
+
+    .logo {
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo img{
+      width:46px;
+      height:46px;
+      object-fit:cover;
+      border-radius:8px;
+      border:1px solid rgba(0,0,0,0.06);
+    }
+
+    .brand {
+      font-size:18px;
+      color:var(--burgundy);
+      margin:0;
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+
+    nav ul{list-style:none;margin:0;padding:0;display:flex;gap:18px}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600;font-size:14px}
+    nav a:hover{color:var(--burgundy)}
+
+    /* Search area */
+    .search-section{
+      margin:18px 0;
+      background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.95));
+      padding:18px;
+      border-radius:12px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .search-grid{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:12px;
+      align-items:center;
+    }
+
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+
+    /* обычные поля */
+    .field input[type="text"],
+    .field select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid #e0e0e0;
+      background:#fff;
+      font-size:14px;
+      color:var(--text);
+    }
+
+    /* бордовые плашки для дат/селекта */
+    .chip input[type="date"],
+    .chip select,
+    .chip .fake-date {
+      width:100%;
+      padding:10px 14px;
+      border-radius:999px;
+      border:none;
+      background:var(--burgundy);
+      color:#fff;
+      font-weight:600;
+      font-size:14px;
+      outline: none;
+    }
+
+    /* убрать стрелку даты в некоторых браузерах, но не во всех */
+    input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); opacity: .9; }
+
+    /* кнопка поиска */
+    .search-btn{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      justify-content:center;
+    }
+
+    .search-btn button{
+      width:100%;
+      padding:12px 16px;
+      border-radius:10px;
+      border:none;
+      background:var(--burgundy);
+      color:#fff;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      transition: background .18s, transform .08s;
+    }
+    .search-btn button:hover{background:var(--burgundy-dark); transform:translateY(-2px)}
+
+    .tiny {
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    /* popular */
+    .hero{
+      position:relative;
+      margin:10px 0 18px;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    }
+    .hero img{width:100%;height:420px;object-fit:cover;display:block}
+    .hero .overlay{
+      position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.5));
+      display:flex;align-items:center;justify-content:center;
+    }
+    .hero h1{color:#fff;font-size:34px;margin:0;padding:8px 16px;text-align:center}
+
+    .section{
+      margin:20px 0;
+      padding:18px;
+      background:var(--card);
+      border-radius:12px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    }
+
+    .section h2{margin:0 0 12px;font-size:18px;color:var(--burgundy)}
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:16px;
+      margin-top:10px;
+    }
+
+    .card{
+      background:#fafafa;border-radius:10px;overflow:hidden;border:1px solid #f0f0f0;transition:transform .16s;
+    }
+    .card:hover{transform:translateY(-6px)}
+    .card img{width:100%;height:160px;object-fit:cover;display:block}
+    .card .content{padding:12px}
+    .card h3{margin:0 0 6px;color:var(--burgundy);font-size:16px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
+
+    footer{margin:26px 0 60px;text-align:center;color:var(--muted);font-size:14px}
+
+    /* responsive */
+    @media (max-width:980px){
+      .search-grid{grid-template-columns:repeat(2,1fr)}
+      .hero img{height:300px}
+    }
+    @media (max-width:560px){
+      .search-grid{grid-template-columns:1fr;gap:10px}
+      header{padding:12px}
+      .brand{font-size:16px}
+      .logo img{width:38px;height:38px}
+      .hero img{height:220px}
+      .hero h1{font-size:22px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <header>
+      <div class="logo">
+        <!-- логотип с Unsplash (тот же источник) -->
+        <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&q=80" alt="logo">
+        <p class="brand">Fly Emirates</p>
+      </div>
+
+      <nav aria-label="Главная навигация">
+        <ul>
+          <li><a href="#">Главная</a></li>
+          <li><a href="#">Направления</a></li>
+          <li><a href="#">Акции</a></li>
+          <li><a href="#">Контакты</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" aria-hidden="false">
+      <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80" alt="Пассажирский самолет в небе">
+      <div class="overlay">
+        <h1>Путешествуй с комфортом — находи лучшие предложения</h1>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="search-section" aria-label="Поиск билетов">
+      <form class="search-grid" action="#" method="get" onsubmit="event.preventDefault(); alert('Форма отправлена (демо)')">
+        <!-- Откуда -->
+        <div class="field">
+          <label for="from">Откуда</label>
+          <input id="from" name="from" type="text" placeholder="Город отправления (например, Алматы)" required>
+        </div>
+
+        <!-- Куда -->
+        <div class="field">
+          <label for="to">Куда</label>
+          <input id="to" name="to" type="text" placeholder="Город назначения (например, Дубай)" required>
+        </div>
+
+        <!-- Дата туда (плашка бордового цвета) -->
+        <div class="chip">
+          <label for="depart">Туда</label>
+          <input id="depart" name="depart" type="date" required aria-label="Дата вылета">
+        </div>
+
+        <!-- Дата назад (плашка) -->
+        <div class="chip">
+          <label for="return">Обратно</label>
+          <input id="return" name="return" type="date" aria-label="Дата возвращения">
+        </div>
+
+        <!-- Пассажиры / Класс (селекты) -->
+        <div class="chip">
+          <label for="passengers">Пассажиры</label>
+          <select id="passengers" name="passengers" aria-label="Количество пассажиров">
+            <option value="1">1 пассажир</option>
+            <option value="2">2 пассажира</option>
+            <option value="3">3 пассажира</option>
+            <option value="4">4 пассажира</option>
+            <option value="5">5 пассажиров</option>
+          </select>
+        </div>
+
+        <!-- Класс путешествия -->
+        <div class="chip">
+          <label for="class">Класс</label>
+          <select id="class" name="class" aria-label="Класс">
+            <option value="economy">Эконом</option>
+            <option value="premium">Премиум-эконом</option>
+            <option value="business">Бизнес</option>
+            <option value="first">Первый</option>
+          </select>
+        </div>
+
+        <!-- Кнопка — занимает одну колонку, но в сетке она расположится в конце -->
+        <div class="search-btn" style="grid-column: span 6;">
+          <span class="tiny">Нажми, чтобы увидеть доступные рейсы (демо)</span>
+          <button type="submit">Найти билеты</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Popular -->
+    <section class="section" aria-labelledby="popular-heading">
+      <h2 id="popular-heading">Популярные направления</h2>
+
+      <div class="cards" role="list">
+        <article class="card" role="listitem">
+          <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80" alt="Алматы — Дубай">
+          <div class="content">
+            <h3>Алматы — Дубай</h3>
+            <p>Специальные предложения и удобные пересадки. Старт от 85 000 ₸</p>
+          </div>
+        </article>
+
+        <article class="card" role="listitem">
+          <img src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80" alt="Алматы — Нью-Йорк">
+          <div class="content">
+            <h3>Алматы — Нью-Йорк</h3>
+            <p>Комфортные перелёты, специальные цены при раннем бронировании.</p>
+          </div>
+        </article>
+
+        <article class="card" role="listitem">
+          <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80" alt="Астана — Париж">
+          <div class="content">
+            <h3>Астана — Париж</h3>
+            <p>Романтика и культура — выгодные предложения в выбранные даты.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      © 2025 Fly Emirates — демо-версия сайта. Все права защищены.
+    </footer>
+  </div>
+</body>
+</html>
